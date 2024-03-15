@@ -39,3 +39,102 @@ await User.destroy({ where: { id: "de262606-070c-42e1-a43d-75c9696e919a" } }) //
 
 userById.destroy() // void
 ```
+
+# Specs Serveur
+
+https://iut-todo-server.glitch.me/ - Glitch (Disponible tout le temps)
+
+# Modèle de donnée
+
+```
+[
+    id: unique number,
+    label: string,
+    status: string "done" or "not done",
+    owner: string
+]
+```
+
+# Endpoint `GET /tasks` - Récupérer toutes les tâches
+
+Renvoie un tableau JSON contenant toutes les tâches enregistrées.
+
+Example de corps de réponse `application/json` 200 : 
+
+```
+[
+  {
+    "id": 42,
+    "label": "Acheter du lait",
+    "status": "not done",
+    "owner": "Moi"
+  },
+  ...
+]
+```
+
+
+# Endpoint `POST /tasks` - Créer une nouvelle tâche
+
+Crée une nouvelle tâche avec les détails spécifiés dans le corps de la requête. Le corps de la requête doit contenir un objet JSON avec les propriétés suivantes : "label" (champ obligatoire), "status" (champ obligatoire) et "owner" (champ obligatoire). La réponse renvoie un objet JSON représentant la tâche nouvellement créée avec un identifiant unique généré automatiquement.
+
+Exemple de corps de requête `application/json` :
+
+```
+{
+  "label": "Acheter du lait",
+  "status": "not done",
+  "owner": "Moi"
+}
+```
+
+Example de corps de réponse de succès `application/json` 200 :
+
+
+```
+{
+  "id": 42,
+  "label": "Acheter du lait écrémé",
+  "status": "done",
+  "owner": "Moi"
+}
+```
+
+Example de corps de réponse d'échéc `text/plain` 400 :
+
+```
+Label is required; Status is required; Invalid status value
+```
+
+
+# Endpoint `PUT /tasks/:id` - Mettre à jour une tâche spécifique
+
+Met à jour la tâche spécifiée par son identifiant unique ":id". Le corps de la requête peut contenir un ou plusieurs des champs suivants : "label", "status" et "owner". Seuls les champs spécifiés seront mis à jour. Si aucun champ n'est spécifié, la tâche ne sera pas modifiée. La réponse renvoie un objet JSON représentant la tâche mise à jour.
+
+Exemple de corps de requête `application/json` :
+
+```
+{
+  "label": "Acheter du lait écrémé",
+  "status": "done",
+  "owner": "Moi"
+}
+```
+
+Example de corps de réponse de succès `application/json` 200 :
+
+
+```
+{
+  "id": 42,
+  "label": "Acheter du lait écrémé",
+  "status": "done",
+  "owner": "Moi"
+}
+```
+
+Example de corps de réponse d'échéc `text/plain` 400 :
+
+```
+Label is required; Status is required; Invalid status value
+```
